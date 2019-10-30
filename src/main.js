@@ -33,7 +33,7 @@ function initApp() {
   myAccount = web3.eth.getAccounts();
 }
 
-window.incrementNumber = async () => {
+window.incrementNumber　= () => {
   try {
     let option = {
       from: myAccount,
@@ -41,15 +41,15 @@ window.incrementNumber = async () => {
       gas: "41000",
     };
 
-    await contractInstance.methods.increment().send(option);
+    contractInstance.methods.increment().send(option);
   } catch (err) {
     console.log(err);
   }
 };
 
-window.getNumber = async () => {
+window.getNumber = () => {
   try {
-    let number = await contractInstance.methods.getCounter().call();
+    let number = contractInstance.methods.getCounter().call();
     document.getElementById("number").innerText = number;
   } catch (err) {
     console.log(err);
