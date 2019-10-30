@@ -1,8 +1,10 @@
-let smartContractAddress = "0x413359cd8Bd0316cD84dCa817b60c8b75F46f16B";
+let CounterSmartContractAddress = "0x1076baBb09c31A6Ed04CC16Ef5E6B5E15b793fd0";
+let TokenSmartContractAddress = "0xF99C8daA9F6A0c379b1a5dE8aC730320976FCF46";
 let myAccount;
-let contractInstance;
+let CounterContractInstance;
+let TokenContractInstance;
 
-let abi = [
+let counterAbi = [
     {
         "constant": false,
         "inputs": [],
@@ -28,8 +30,298 @@ let abi = [
     }
 ];
 
+let tokenAbi = [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "approve",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "totalSupply",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferFrom",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "decimals",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "name": "addedValue",
+          "type": "uint256"
+        }
+      ],
+      "name": "increaseAllowance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "balanceOf",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "symbol",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "name": "subtractedValue",
+          "type": "uint256"
+        }
+      ],
+      "name": "decreaseAllowance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "name": "spender",
+          "type": "address"
+        }
+      ],
+      "name": "allowance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Approval",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "receipient",
+          "type": "address"
+        },
+        {
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer_increment",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ];
+
 async function initApp() {
-    contractInstance = new web3.eth.Contract(abi, smartContractAddress);　//コントラクトオブジェクトの作成
+    CounterContractInstance = new web3.eth.Contract(counterAbi, CounterSmartContractAddress);
+    TokenContractInstance = new web3.eth.Contract(tokenAbi, TokenSmartContractAddress);
+
     myAccount = (await web3.eth.getAccounts())[0]; // Metamaskからアカウントの取得
 }
 
@@ -41,7 +333,7 @@ window.incrementNumber = async () => {
             gas: "41000",
         };
 
-        await contractInstance.methods.increment().send(option);
+        await CounterContractInstance.methods.increment().send(option);
     } catch (err) {
         console.log(err);
     }
@@ -49,12 +341,44 @@ window.incrementNumber = async () => {
 
 window.getNumber = async () => {
     try {
-        let number = await contractInstance.methods.getCounter().call();
+        let number = await CounterContractInstance.methods.getCounter().call();
         document.getElementById("number").innerText = number;
     } catch (err) {
         console.log(err);
     }
 };
+
+window.update = async () => {
+    try {
+        let balance = parseFloat(await TokenContractInstance.methods.balanceOf(myAccount).call()) / 10 ** 18;
+        let symbol = await TokenContractInstance.methods.symbol().call();
+        document.getElementById("balance").innerText = balance + symbol;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+window.transfer = async () => {
+    try {
+        let address = document.getElementById("address").value;
+        let amount = parseFloat(document.getElementById("amount").value);
+
+        if (!address || !amount) {
+            return window.alert("送金先と送金額を入力してください");
+        }
+
+        let option = {
+            from: myAccount,
+            gasPrice: "20000000000",
+            gas: "70000",
+        };
+
+        await TokenContractInstance.methods.transfer_increment(address, amount).send(option);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 window.addEventListener('load', async function () {
 
@@ -63,7 +387,7 @@ window.addEventListener('load', async function () {
         let provider = web3.currentProvider;
         web3 = new Web3(provider);  //web3オブジェクトの作成
 
-        await provider.enable(); //これめっちゃ大事 ここでMetamaskと繋がる感じっぽい
+        await provider.enable(); //ここでMetamaskと繋がる感じっぽい
 
     } else {
         console.log("Metamaskが認識されません");
