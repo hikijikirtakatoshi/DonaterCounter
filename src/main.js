@@ -28,12 +28,14 @@ let abi = [
   }
 ];
 
-function initApp() {
-  contractInstance = web3.eth.contract(abi, smartContractAddress);
-  myAccount = web3.eth.getAccounts();
+async function initApp() {
+  contractInstance = new web3.eth.Contract(abi, smartContractAddress);
+  myAccount = (await web3.eth.getAccounts());
+  console.log(typeof myAccount);
+  console.log(myAccount);
 }
 
-window.incrementNumber　= () => {
+window.incrementNumber = async () => {
   try {
     let option = {
       from: myAccount,
@@ -41,32 +43,35 @@ window.incrementNumber　= () => {
       gas: "41000",
     };
 
-    contractInstance.methods.increment().send(option);
+    await contractInstance.methods.increment().send(option);
   } catch (err) {
     console.log(err);
   }
 };
 
-window.getNumber = () => {
+window.getNumber = async () => {
   try {
-    let number = contractInstance.methods.getCounter().call();
+    let number = await contractInstance.methods.getCounter().call();
     document.getElementById("number").innerText = number;
   } catch (err) {
     console.log(err);
   }
 };
 
-window.addEventListener('load', function () {
+window.addEventListener('load', async function () {
 
   if (typeof web3 !== 'undefined') {
-    web3 = new Web3(web3.currentProvider);
-    this.console.log("できてる");
+
+    let provider = web3.currentProvider;
+    web3 = new Web3(provider);
+    
+    await provider.enable(); //これめっちゃ大事
 
   } else {
-    this.console.log("だめです");
+    console.log("Metamaskが認識されません");
 
   }
 
   initApp();
 
-})
+});
