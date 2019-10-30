@@ -29,10 +29,8 @@ let abi = [
 ];
 
 async function initApp() {
-  contractInstance = new web3.eth.Contract(abi, smartContractAddress);
-  myAccount = (await web3.eth.getAccounts());
-  console.log(typeof myAccount);
-  console.log(myAccount);
+  contractInstance = new web3.eth.Contract(abi, smartContractAddress);　//コントラクトオブジェクトの作成
+  myAccount = (await web3.eth.getAccounts())[0]; // Metamaskからアカウントの取得
 }
 
 window.incrementNumber = async () => {
@@ -60,12 +58,12 @@ window.getNumber = async () => {
 
 window.addEventListener('load', async function () {
 
-  if (typeof web3 !== 'undefined') {
+  if (typeof web3 !== 'undefined') {　//Metamaskが入っているか確認
 
     let provider = web3.currentProvider;
-    web3 = new Web3(provider);
-    
-    await provider.enable(); //これめっちゃ大事
+    web3 = new Web3(provider);  //web3オブジェクトの作成
+
+    await provider.enable(); //これめっちゃ大事 ここでMetamaskと繋がる感じっぽい
 
   } else {
     console.log("Metamaskが認識されません");
