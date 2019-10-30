@@ -466,12 +466,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x664303592283a6355BcBF0F601118514b894b738",
-      "transactionHash": "0xea80b25ac82d6a6439c2876eb40fcdfef3b0d0cdf34c2248902a4e219f9a9b21"
+      "address": "0x935d463e9D5f29730d89c3351EeAC9da0b83FaC5",
+      "transactionHash": "0xb084e5d370a03bd44fb44d51040f0efa66c591cf6aa24a47c4a86be3517821d4"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-10-30T08:54:16.318Z",
+  "updatedAt": "2019-10-30T09:05:39.090Z",
   "devdoc": {
     "methods": {}
   },

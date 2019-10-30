@@ -2461,12 +2461,12 @@
         }
       },
       "links": {},
-      "address": "0xF99C8daA9F6A0c379b1a5dE8aC730320976FCF46",
-      "transactionHash": "0xa1d59ab0ecd5c3cf1093ee9d31d9eeb7647f8ea4588394a8690601fa7374d49f"
+      "address": "0xA7104f4F7a6192DFA3ea311c9Eca308665C94344",
+      "transactionHash": "0x1309ada2d4f3e6e430081ec72d09ec4b5ad9d4242b6fa7be08694ce83f90f063"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-10-30T08:54:16.574Z",
+  "updatedAt": "2019-10-30T09:05:39.366Z",
   "devdoc": {
     "methods": {
       "allowance(address,address)": {
