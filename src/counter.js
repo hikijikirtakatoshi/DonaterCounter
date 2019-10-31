@@ -24,13 +24,13 @@ let counterAbi = [
     }
 ];
 
-let counterSmartContractAddress = "0x142Bf45F652733Ce6383F8B8C49aa15df02D606B";
+let ContractAddress = "0x142Bf45F652733Ce6383F8B8C49aa15df02D606B";
 let myAccount;
-let counterContractInstance;
+let ContractInstance;
 
 async function initApp() {
     try {
-        counterContractInstance = new web3.eth.Contract(counterAbi, counterSmartContractAddress);
+        ContractInstance = new web3.eth.Contract(counterAbi, ContractAddress);
         myAccount = (await web3.eth.getAccounts())[0];
     } catch (err) {
         console.log(err);
@@ -45,7 +45,7 @@ window.incrementNumber = async () => {
             gas: "41000",
         };
 
-        await counterContractInstance.methods.increment().send(option);
+        await ContractInstance.methods.increment().send(option);
     } catch (err) {
         console.log(err);
     }
@@ -53,8 +53,8 @@ window.incrementNumber = async () => {
 
 window.getNumber = async () => {
     try {
-        let number = await counterContractInstance.methods.getCounter().call();
-        document.getElementById("number").innerText = number;
+        let counter = await ContractInstance.methods.getCounter().call();
+        document.getElementById("counter").innerText = counter;
     } catch (err) {
         console.log(err);
     }
