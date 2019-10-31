@@ -1,9 +1,3 @@
-let CounterSmartContractAddress = "0x142Bf45F652733Ce6383F8B8C49aa15df02D606B";
-let TokenSmartContractAddress = "0x01790949F63a6697861a7C46bE7322b05F1EFBd1";
-let myAccount;
-let CounterContractInstance;
-let TokenContractInstance;
-
 let counterAbi = [
     {
         "constant": false,
@@ -318,10 +312,30 @@ let tokenAbi = [
     }
 ];
 
+let counterSmartContractAddress = "0x142Bf45F652733Ce6383F8B8C49aa15df02D606B";
+let tokenSmartContractAddress = "0x01790949F63a6697861a7C46bE7322b05F1EFBd1";
+let myAccount;
+let counterContractInstance;
+let tokenContractInstance;
+
 async function initApp() {
-    CounterContractInstance = new web3.eth.Contract(counterAbi, CounterSmartContractAddress);
-    TokenContractInstance = new web3.eth.Contract(tokenAbi, TokenSmartContractAddress);
-    myAccount = (await web3.eth.getAccounts())[0];
+    try {
+        counterContractInstance = new web3.eth.Contract(counterAbi, counterSmartContractAddress);
+        tokenContractInstance = new web3.eth.Contract(tokenAbi, tokenSmartContractAddress);
+        myAccount = (await web3.eth.getAccounts())[0];
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function updateBalance() {
+    try {
+        let balance = (parseFloat(await tokenContractInstance.methods.balanceOf(myAccount).call())) / 10 ** 18;
+        let symbol = await tokenContractInstance.methods.symbol().call();
+        document.getElementById("balance").innerText = balance + symbol;
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 window.incrementNumber = async () => {
@@ -332,7 +346,7 @@ window.incrementNumber = async () => {
             gas: "41000",
         };
 
-        await CounterContractInstance.methods.increment().send(option);
+        await counterContractInstance.methods.increment().send(option);
     } catch (err) {
         console.log(err);
     }
@@ -340,22 +354,14 @@ window.incrementNumber = async () => {
 
 window.getNumber = async () => {
     try {
-        let number = await CounterContractInstance.methods.getCounter().call();
+        let number = await counterContractInstance.methods.getCounter().call();
         document.getElementById("number").innerText = number;
     } catch (err) {
         console.log(err);
     }
 };
 
-window.update = async () => {
-    try {
-        let balance = (parseFloat(await TokenContractInstance.methods.balanceOf(myAccount).call())) / 10 ** 18;
-        let symbol = await TokenContractInstance.methods.symbol().call();
-        document.getElementById("balance").innerText = balance + symbol;
-    } catch (err) {
-        console.log(err);
-    }
-};
+window.update = updateBalance();
 
 window.transfer = async () => {
     try {
@@ -372,7 +378,7 @@ window.transfer = async () => {
             gas: "70000",
         };
 
-        await TokenContractInstance.methods.transfer_increment(address, amount).send(option);
+        await tokenContractInstance.methods.transfer_increment(address, amount).send(option);
 
     } catch (err) {
         console.log(err);
@@ -381,12 +387,12 @@ window.transfer = async () => {
 
 window.addEventListener('load', async function () {
 
-    if (typeof web3 !== 'undefined') {　//Metamaskが入っているか確認
+    if (typeof web3 !== 'undefined') {　
 
         let provider = web3.currentProvider;
-        web3 = new Web3(provider);  //web3オブジェクトの作成
+        web3 = new Web3(provider);  
 
-        await provider.enable(); //ここでMetamaskと繋がる感じっぽい
+        await provider.enable();
 
     } else {
         console.log("Metamaskが認識されません");
