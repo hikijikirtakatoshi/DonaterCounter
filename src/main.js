@@ -328,16 +328,6 @@ async function initApp() {
     }
 }
 
-async function updateBalance() {
-    try {
-        let balance = (parseFloat(await tokenContractInstance.methods.balanceOf(myAccount).call())) / 10 ** 18;
-        let symbol = await tokenContractInstance.methods.symbol().call();
-        document.getElementById("balance").innerText = balance + symbol;
-    } catch (err) {
-        console.log(err);
-    }
-}
-
 window.incrementNumber = async () => {
     try {
         let option = {
@@ -361,7 +351,15 @@ window.getNumber = async () => {
     }
 };
 
-window.update = updateBalance();
+window.update = async () => {
+    try {
+        let balance = (parseFloat(await tokenContractInstance.methods.balanceOf(myAccount).call())) / 10 ** 18;
+        let symbol = await tokenContractInstance.methods.symbol().call();
+        document.getElementById("balance").innerText = balance + symbol;
+    } catch (err) {
+        console.log(err);
+    }
+};
 
 window.transfer = async () => {
     try {
@@ -387,10 +385,10 @@ window.transfer = async () => {
 
 window.addEventListener('load', async function () {
 
-    if (typeof web3 !== 'undefined') {　
+    if (typeof web3 !== 'undefined') {
 
         let provider = web3.currentProvider;
-        web3 = new Web3(provider);  
+        web3 = new Web3(provider);
 
         await provider.enable();
 
