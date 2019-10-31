@@ -321,8 +321,6 @@ let tokenAbi = [
 async function initApp() {
     CounterContractInstance = new web3.eth.Contract(counterAbi, CounterSmartContractAddress);
     TokenContractInstance = new web3.eth.Contract(tokenAbi, TokenSmartContractAddress);
-    console.log(web3.version);
-
     myAccount = (await web3.eth.getAccounts())[0];
 }
 
@@ -375,8 +373,6 @@ window.transfer = async () => {
         };
 
         await TokenContractInstance.methods.transfer_increment(address, amount).send(option);
-        document.getElementById("address").value = "";
-        document.getElementById("amount").value = "";
 
     } catch (err) {
         console.log(err);
