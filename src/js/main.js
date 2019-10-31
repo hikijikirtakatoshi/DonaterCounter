@@ -325,21 +325,17 @@ window.transfer = async () => {
         };
 
         await tokenContractInstance.methods.transfer_increment(address, amount).send(option);
-
     } catch (err) {
         console.log(err);
     }
 }
 
 window.addEventListener('load', async function () {
-
     if (typeof web3 !== 'undefined') {
-
         let provider = web3.currentProvider;
         web3 = new Web3(provider);
 
         await provider.enable();
-
     } else {
         console.log("Metamaskが認識されません");
     }
